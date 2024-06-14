@@ -1,0 +1,30 @@
+.event-progress {
+  position: relative;
+  font-size: 0.9em;
+
+  &__progress-bar {
+    height: 8px;
+    background: #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5em;
+  }
+
+  &__progress {
+    height: 100%;
+
+    &.nearest {
+      background: #00b8d4;
+    }
+
+    &.active {
+      background: #00c853;
+    }
+  }
+
+  &__text {
+    display: flex;
+    color: #5e5e5e;
+    justify-content: flex-end;
+  }
+}
