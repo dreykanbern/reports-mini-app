@@ -27,26 +27,34 @@ const sectionName = computed(() => `Секция ${sectionNameMap[sectionId.valu
 const currentTime = ref(getCurrentTime());
 const sectionEvents = ref<Event[]>([]);
 
-// Обновление времени каждые 30 секунд
-let intervalId: number | null = null;
+let timeIntervalId: number | null = null;
+let dataIntervalId: number | null = null;
 
 const updateCurrentTime = () => {
   currentTime.value = getCurrentTime();
 };
 
-onMounted(() => {
-  intervalId = setInterval(updateCurrentTime, 30000);
+const loadData = () => {
   loadSectionData(sectionId.value as string, sectionEvents);
+};
+
+onMounted(() => {
+  timeIntervalId = setInterval(updateCurrentTime, 30000); // Обновление времени каждые 30 секунд
+  loadData(); // Первоначальная загрузка данных
+  dataIntervalId = setInterval(loadData, 300000); // Загрузка данных каждые 5 минут
 });
 
 onUnmounted(() => {
-  if (intervalId) {
-    clearInterval(intervalId);
+  if (timeIntervalId) {
+    clearInterval(timeIntervalId);
+  }
+  if (dataIntervalId) {
+    clearInterval(dataIntervalId);
   }
 });
 
 watch(() => route.params.id, (newId) => {
   sectionId.value = newId as string;
-  loadSectionData(newId as string, sectionEvents);
+  loadData();
 });
 </script>
